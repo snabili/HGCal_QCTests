@@ -18,7 +18,6 @@ outfile = com.pull_arg('--outfile',    type=str, help='output SPS plot with mult
 
 #read measured root file
 f=rt.TFile(infile)
-#f = rt.TFile("sampling_scan9.root")
 hgcroc = f.Get("unpacker_data/hgcroc")
 Bins=50
 h = rt.TH1F("h","h", Bins, 330, 440)
@@ -29,7 +28,7 @@ hgcroc.Draw("adc>>h","channel == 28 && half == 0")
 # for now sigma --> for now manual
 npeaks = 30
 s = rt.TSpectrum(2*npeaks);
-nfound = s.Search(h,1,"",0.05);
+nfound = s.Search(h,1,"",0.01);
 print(f"Found {nfound:d} candidate peaks to fit")
 
 npeaks = 0
@@ -38,23 +37,22 @@ xpos = []
 for i in range(nfound):
   xpos.append(round(xpeaks[i],1))
 
-npeaks = 0
-xpeaks = s.GetPositionX()
-xpos = []
-for i in range(nfound):
-  xpos.append(round(xpeaks[i],1))
 
+print(f"1st center-of-peaks: {min(xpos)}")
 par = np.ones(nfound*3)
 for p in range(nfound):
    xp = xpos[p]
    bin = h.GetXaxis().FindBin(xp)
    yp = h.GetBinContent(bin)
-   par[3*p] = xp
+   par[3*p] = xp #floating initial values does not give uniform gain; 10% variations 
+   '''par[3*p] = min(xpos) + p * 10 #fixed the peak center as the initial value
+   bin = h.GetXaxis().FindBin(par[3*p])
+   yp = h.GetBinContent(bin)'''
    par[3*p+1] = yp
    par[3*p+2] = 2
    npeaks+=1
 
-
+# start to do the actual fit with scipy
 # histogram --> numpy array
 x = np.linspace(h.GetXaxis().GetXmin(), h.GetXaxis().GetXmax()-h.GetXaxis().GetBinWidth(1), num=h.GetNbinsX())
 y = [h.GetBinContent(i) for i in range(h.GetNbinsX())]
@@ -73,13 +71,19 @@ guess = par
 popt, pcov = curve_fit(func,x,y,p0=par)
 fit = func(x, *popt)
 
+#printing the gain
+sort_cntr = sorted([popt[3*i] for i in range(npeaks)]) #sorting peaks centers
+gain = [np.abs(sort_cntr[i+1]-sort_cntr[i]) for i in range(npeaks-1)]
+print([ "{:0.1f}".format(x) for x in gain])
+
+
 #plotting
 plt.hist(x, bins=50,weights=y, histtype='step',label='SPS plot')
 plt.plot(x,fit,'r-',label='Gaussian Fit')
-plt.title('SinglePhotonSignal plot')
+plt.title('SinglePhotonSpectrum plot')
 plt.legend()
 plt.xlabel('ADC count')
 plt.ylabel('A.U.')
 plt.grid(True)
-plt.show()
+#plt.show()
 plt.savefig('sps.png')
