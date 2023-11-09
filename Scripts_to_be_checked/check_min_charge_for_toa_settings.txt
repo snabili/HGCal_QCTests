@@ -1,0 +1,118 @@
+    ############    
+    # injection scan
+
+    calib2V5_total = [i for i in range(0,500,1)]
+    gain = 0
+    injectedChannels = range(36)
+
+    if injection_scan_mode == True:
+        print(" ############## Start injection scan #################")
+        for injChannel in injectedChannels:
+            injectionConfig = {
+            'BXoffset' : 22, #19
+            'gain' : gain,
+            'calib' : [i for i in calib2V5_total],
+            'injectedChannels' : [injChannel, injChannel + 36]
+            }
+            sipm_injection_scan.sipm_injection_scan(i2csocket,daqsocket,clisocket,options.odir,options_dut,injectionConfig,suffix="gain0_ch%i"%injChannel,keepRawData=1,analysis=1)
+
+        odir = "%s/%s/injection_scan/"%(options.odir, options_dut)
+        toa_threshold_analyzer = analyzer.toa_scan_analyzer(odir=odir)
+        folders = glob.glob(odir+"run_*/")
+        df_ = []
+        for folder in folders:
+                files = glob.glob(folder+"/*.root")
+                for f in files[:]:
+                        df_summary = uproot3.open(f)['runsummary']['summary'].pandas.df()
+                        df_.append(df_summary)
+        toa_threshold_analyzer.data = pandas.concat(df_)
+        toa_threshold_analyzer.makePlot_calib(config_ns_charge='pC')
+        
+        del toa_threshold_analyzer
+
+    ############
+
+    ############
+    # To put in analysis/level0/toa_scan_analysis.py
+
+    def makePlot_calib(self,suffix="",config_ns_charge=None):
+        nchip = len( self.data.groupby('chip').nunique() )        
+        data = self.data[['chip','channel','channeltype','Calib_dac_2V5', 'gain', 'toa_efficiency','toa_stdd','injectedChannel']].copy()
+        inj_chan =data.injectedChannel.unique()
+        if config_ns_charge != None:
+            if config_ns_charge == 'fC':
+                conv_val = 1000
+            else:
+                conv_val = 1
+            data["charge"] = conv_val * ((1.6486* data['Calib_dac_2V5'])/4095 + 0.0189)*((3*(1 - data["gain"])) + data["gain"]*120)
+
+        for chip in range(nchip):
+            # plt.figure(1)
+            fig, axs = plt.subplots(2,2,figsize=(15,10),sharey = False,constrained_layout = True)
+            min_charge = []
+            channels_toa = []
+            for chan in inj_chan:
+                # chans= [chan,chan+18,chan+36,chan+36+18]
+                chans= [chan,chan+36]
+                for ch in chans:
+                    ax = axs[0,0] if ch < 36 else axs[0,1]
+                    sel0 = data.chip == chip
+                    sel0 &= data.channel == ch
+                    sel0 &= data.channeltype == 0
+                    sel0 &= data.injectedChannel == chan
+                    sel0 &= data.toa_efficiency > 0.95
+                    df_sel0 = data[sel0]
+                    if len(df_sel0.toa_efficiency) > 0:
+                        channels_toa = np.append(channels_toa,ch)
+                        if config_ns_charge != None:
+                            min_charge = np.append(min_charge,np.min(df_sel0.charge))
+                        else:
+                            min_charge = np.append(min_charge,np.min(df_sel0.Calib_dac_2V5))
+                    sel = data.chip == chip
+                    sel &= data.channel == ch
+                    sel &= data.channeltype == 0
+                    sel &= data.injectedChannel == chan
+                    df_sel = data[sel]
+                    if config_ns_charge != None:
+                        prof = df_sel.groupby("charge")["toa_efficiency"].sum()
+                    else:
+                        prof = df_sel.groupby("Calib_dac_2V5")["toa_efficiency"].sum()
+                    if config_ns_charge != None:
+                        ax.plot(df_sel.charge,df_sel.toa_efficiency,".-", label = "ch%i" %(ch))
+                        ax.set_xlabel("charge [{}]".format(config_ns_charge))
+                    else:
+                        ax.plot(df_sel.Calib_dac_2V5,df_sel.toa_efficiency,".-", label = "ch%i" %(ch))
+                        ax.set_xlabel("Calib_dac_2V5")
+                    ax.set_ylabel("toa eff")
+                    ax.legend(ncol=3, loc = "lower right",fontsize=8)
+
+                    ax = axs[1,0] if ch < 36 else axs[1,1]
+                    if config_ns_charge != None:
+                        ax.plot(df_sel.charge, df_sel.toa_stdd,".")
+                        ax.set_xlabel("charge [{}]".format(config_ns_charge))
+                    else:
+                        ax.plot(df_sel.Calib_dac_2V5, df_sel.toa_stdd,".")
+                        ax.set_xlabel("Calib_dac_2V5")
+                    ax.set_ylabel("toa noise")
+                    
+            plt.savefig("%s/1_toa_vs_charge_chip%d_%s.png"%(self.odir,chip,suffix))
+
+            plt.figure(figsize = (12,5),facecolor='white')
+
+            plt.plot(channels_toa,min_charge,"o")
+            
+            if config_ns_charge != None:
+                plt.ylabel("charge [{}]".format(config_ns_charge), fontsize = 30)
+            else:
+                plt.ylabel("Calib_dac_2V5", fontsize = 30)
+            plt.xlabel("Channels", fontsize = 30)
+            plt.grid()
+            plt.tick_params(axis='x', labelsize=28)
+            plt.tick_params(axis='y', labelsize=28)
+                    
+            plt.savefig("%s/1_channel_vs_mintoa_chip%d_%s.png"%(self.odir,chip,suffix),bbox_inches='tight')
+            calib_dac_min = np.mean(min_charge)
+
+        return calib_dac_min    
+
+    ############
