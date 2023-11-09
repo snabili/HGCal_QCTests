@@ -1,0 +1,14 @@
+PyMeasure==0.8.0
+paramiko
+pyzmq
+pyyaml
+pandas
+numpy
+pyinotify
+nested_dict
+nested_lookup
+matplotlib
+scipy
+uproot3
+tables
+seaborn
