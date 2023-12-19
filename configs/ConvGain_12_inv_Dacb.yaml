@@ -1,0 +1,568 @@
+client:
+  data_push_port: '8888'
+  hw_type: TB
+  outputDirectory: data
+  run_type: default
+  serverIP: tbtester1
+daq:
+  IdelayStep: '8'
+  NChips: '1'
+  Number_of_events_per_readout: '-1'
+  active_menu: randomL1A
+  delayScanData_port: '8889'
+  elinks_daq:
+  - idcode: 0
+    name: link0
+    polarity: 1
+  - idcode: 1
+    name: link1
+    polarity: 1
+  elinks_trg:
+  - idcode: 0
+    name: link0
+    polarity: 0
+  - idcode: 2
+    name: link1
+    polarity: 1
+  - idcode: 3
+    name: link2
+    polarity: 1
+  - idcode: 1
+    name: link3
+    polarity: 0
+  elinks_trg_phase:
+  - idcode: 1
+    name: link0
+    polarity: 1
+  menus:
+    calibAndL1A:
+      NEvents: 1000
+      bxCalib: 10
+      bxL1A: 33
+      lengthCalib: 1
+      lengthL1A: 1
+      prescale: 0
+    calibAndL1AplusTPG:
+      NEvents: 1000
+      bxCalib: 10
+      bxL1A: 33
+      lengthCalib: 1
+      lengthL1A: 1
+      prescale: 0
+      trg_fifo_latency: 3
+    delayScan:
+      acquireLength: 1000
+      delayStep: 1
+      idlePattern: 0XACCCCCCC
+      maxDelay: 512
+    dummy:
+      NEvents: 10000
+      NEventsPerPush: 200
+    externalL1A:
+      NEvents: 10000
+      bxCalibExt: 10
+      lengthCalibExt: 2
+      loopBack: true
+      prescale: 0
+      trg_fifo_latency: 3
+      trgphase_fifo_latency: 15
+    marsRndL1A:
+      bx_min: 45
+      log2_rand_bx_period: 10
+    randomL1A:
+      NEvents: 10000
+      log2_rand_bx_period: 10
+    randomL1AplusTPG:
+      NEvents: 10000
+      bx_min: 45
+      log2_rand_bx_period: 10
+      trg_fifo_latency: 3
+  zmqPushPull_port: '8888'
+roc_s0:
+  sc:
+    DigitalHalf:
+      0:
+        Bx_offset: 2
+        CalibrationSC: 1
+        L1Offset: 10
+      1:
+        Bx_offset: 2
+        CalibrationSC: 1
+        L1Offset: 10
+    GlobalAnalog:
+      0:
+        Cd: 0
+        Cf: 10
+        Cf_comp: 10
+        Dacb_dynran: 3
+        Dacb_vb_conv: 6
+        Dacb_vbi_pa: 32
+        Delay40: 2
+        Delay65: 3
+        Delay87: 3
+        Delay9: 3
+        Gain_conv: 8
+        Idac_inv: 6
+        Idac_tot: 6
+        ON_backup: 0
+        ON_conv: 1
+        Ref_pa_cm: 0
+        Rf: 12
+        SelExtADC: 0
+        SelRisingEdge: 1
+      1:
+        Cd: 0
+        Cf: 10
+        Cf_comp: 10
+        Dacb_dynran: 3
+        Dacb_vb_conv: 6
+        Dacb_vbi_pa: 32
+        Delay40: 2
+        Delay65: 3
+        Delay87: 3
+        Delay9: 3
+        Gain_conv: 8
+        Idac_inv: 6
+        Idac_tot: 6
+        ON_backup: 0
+        ON_conv: 1
+        Ref_pa_cm: 0
+        Rf: 12
+        SelExtADC: 0
+        SelRisingEdge: 1
+    MasterTdc:
+      all:
+        BIAS_CAL_DAC_CTDC_P_D: 2
+        BIAS_CAL_DAC_CTDC_P_EN: 1
+        BIAS_FOLLOWER_CAL_P_CTDC_D: 4
+        BIAS_FOLLOWER_CAL_P_CTDC_EN: 1
+        BIAS_FOLLOWER_CAL_P_FTDC_D: 4
+        BIAS_FOLLOWER_CAL_P_FTDC_EN: 1
+        BIAS_I_CTDC_D: 10
+        BIAS_I_FTDC_D: 10
+        CTDC_CALIB_FREQUENCY: 2
+        FOLLOWER_CTDC_EN: 1
+        FOLLOWER_FTDC_EN: 1
+        FTDC_CALIB_FREQUENCY: 2
+        GLOBAL_EN_BUFFER_CTDC: 1
+        GLOBAL_EN_BUFFER_FTDC: 1
+    ReferenceVoltage:
+      0:
+        Calib_2V5: 0
+        Inv_vref: 703
+        Noinv_vref: 220
+        Refi: 1
+        Toa_vref: 450
+        Tot_vref: 600
+        Vbg_1v: 4
+        choice_cinj: 0
+        cmd_120p: 0
+      1:
+        Calib_2V5: 0
+        Inv_vref: 698
+        Noinv_vref: 220
+        Refi: 1
+        Toa_vref: 450
+        Tot_vref: 600
+        Vbg_1v: 4
+        choice_cinj: 0
+        cmd_120p: 0
+    Top:
+      all:
+        BIAS_I_PLL_D: 63
+        EN_HIGH_CAPA: 1
+        RunL: 1
+        RunR: 1
+    calib:
+      0:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 0
+      1:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 0
+    ch:
+      0:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 63
+        sign_dac: 0
+      1:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      2:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 4
+        sign_dac: 1
+      3:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      4:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      5:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      6:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      7:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      8:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      9:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      10:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      11:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 9
+        sign_dac: 1
+      12:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      13:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      14:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 14
+        sign_dac: 1
+      15:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 9
+        sign_dac: 1
+      16:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      17:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      18:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      19:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      20:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      21:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 5
+        sign_dac: 1
+      22:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 8
+        sign_dac: 1
+      23:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      24:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 9
+        sign_dac: 1
+      25:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 5
+        sign_dac: 1
+      26:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 5
+        sign_dac: 1
+      27:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 9
+        sign_dac: 1
+      28:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      29:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      30:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 4
+        sign_dac: 1
+      31:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      32:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      33:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 6
+        sign_dac: 1
+      34:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 7
+        sign_dac: 1
+      35:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 5
+        sign_dac: 1
+      36:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 16
+        sign_dac: 1
+      37:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      38:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 11
+        sign_dac: 1
+      39:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 16
+        sign_dac: 1
+      40:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      41:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      42:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 14
+        sign_dac: 1
+      43:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      44:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      45:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      46:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      47:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 14
+        sign_dac: 1
+      48:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 11
+        sign_dac: 1
+      49:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      50:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      51:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 14
+        sign_dac: 1
+      52:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      53:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      54:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      55:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      56:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      57:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      58:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      59:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      60:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 14
+        sign_dac: 1
+      61:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      62:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      63:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      64:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 15
+        sign_dac: 1
+      65:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 13
+        sign_dac: 1
+      66:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      67:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      68:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 12
+        sign_dac: 1
+      69:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      70:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 10
+        sign_dac: 1
+      71:
+        Gain_conv: 4
+        Inputdac: 31
+        dacb: 18
+        sign_dac: 1
+    cm:
+      0:
+        Gain_conv: 4
+        Inputdac: 0
+        dacb: 12
+        sign_dac: 0
+      1:
+        Gain_conv: 4
+        Inputdac: 0
+        dacb: 12
+        sign_dac: 0
+      2:
+        Gain_conv: 4
+        Inputdac: 0
+        dacb: 12
+        sign_dac: 0
+      3:
+        Gain_conv: 4
+        Inputdac: 0
+        dacb: 12
+        sign_dac: 0
