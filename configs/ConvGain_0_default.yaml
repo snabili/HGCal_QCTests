@@ -199,7 +199,7 @@ roc_s0:
       3:
         dacb: 12
         sign_dac: 0
-        ##ref_dac_inv: 0
+        #ref_dac_inv: 0
         Gain_conv: 0
         Inputdac: 0
 
@@ -229,7 +229,7 @@ roc_s0:
       1:
         dacb: 12
         sign_dac: 0
-        ##ref_dac_inv: 13
+        #ref_dac_inv: 13
         Gain_conv: 0
         Inputdac: 31
 
