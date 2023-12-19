@@ -149,7 +149,7 @@ roc_s0:
     ReferenceVoltage:
       0:
         Calib_2V5: 0
-        Inv_vref: 798
+        Inv_vref: 703
         Noinv_vref: 220
         Refi: 1
         Toa_vref: 450
@@ -159,7 +159,7 @@ roc_s0:
         cmd_120p: 0
       1:
         Calib_2V5: 0
-        Inv_vref: 808
+        Inv_vref: 698
         Noinv_vref: 220
         Refi: 1
         Toa_vref: 450
