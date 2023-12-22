@@ -92,6 +92,7 @@ device_name, timestamp ) # a comlete path is needed
     
     
     index=0
+    #ref_dac_inv gives a key error for V3, this is actually v2 terminology
     ref_vals = [0,8,16,24]
     for i,ref_val in enumerate(ref_vals):
         nestedConf = nested_dict()
